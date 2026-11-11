@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru" data-lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="page.title">Финансовый дашборд · Boris Topalov</title>
+  <meta name="description" content="Кейс «Финансовый дашборд»: макет на 237 узлов в FigCraft, HTML-прототип, карточки баланса и KPI, диаграммы и транзакции.">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body data-page="case-dashboard">
+
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="logo" href="../index.html">Boris Topalov</a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="../index.html#cases" data-i18n="nav.cases">Кейсы</a>
+        <a href="../index.html#about" data-i18n="nav.about">Обо мне</a>
+        <a href="../index.html#contact" data-i18n="nav.contact">Контакты</a>
+      </nav>
+      <button class="lang-toggle" id="langToggle" type="button" lang="en" aria-label="Switch to English">EN</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="case-hero">
+      <div class="wrap">
+        <p class="eyebrow" data-i18n="case.dash.eyebrow">UI-концепт · 2026</p>
+        <h1 data-i18n="case.dash.title">Финансовый дашборд</h1>
+        <p class="lead" data-i18n="case.dash.lead">Обзорный экран личного кабинета с балансом, KPI, диаграммами и транзакциями. Макет собран в FigCraft и проверен в рабочем HTML-прототипе.</p>
+        <dl class="case-meta">
+          <div>
+            <dt class="small" data-i18n="case.dash.metaRoleLabel">Роль</dt>
+            <dd data-i18n="case.dash.metaRole">UI/UX designer</dd>
+          </div>
+          <div>
+            <dt class="small" data-i18n="case.dash.metaTypeLabel">Тип</dt>
+            <dd data-i18n="case.dash.metaType">Концепт · веб-приложение</dd>
+          </div>
+          <div>
+            <dt class="small" data-i18n="case.dash.metaYearLabel">Год</dt>
+            <dd data-i18n="case.dash.metaYear">2026</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="case-block">
+      <div class="wrap">
+        <h2 data-i18n="case.dash.contextTitle">Контекст</h2>
+        <p data-i18n="case.dash.contextP1">Задача — собрать обзорный экран кабинета, где пользователь видит баланс, динамику и последние операции, не переходя между разделами.</p>
+        <p data-i18n="case.dash.contextP2">Макет собран в FigCraft: 237 узлов на артборде 1440×1680. Логику экрана проверил в рабочем HTML-прототипе, собранном из тех же блоков.</p>
+      </div>
+    </section>
+
+    <section class="case-block">
+      <div class="wrap">
+        <h2 data-i18n="case.dash.roleTitle">Моя роль</h2>
+        <p data-i18n="case.dash.roleP1">Отвечал за структуру экрана, визуальный язык и сборку макета. Прототип верстал сам, чтобы проверить поведение блоков в браузере.</p>
+        <ul class="tags">
+          <li class="tag" data-i18n="case.dash.tag1">Структура экрана</li>
+          <li class="tag" data-i18n="case.dash.tag2">Визуальный язык</li>
+          <li class="tag" data-i18n="case.dash.tag3">Сборка макета</li>
+          <li class="tag" data-i18n="case.dash.tag4">HTML-прототип</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="case-block">
+      <div class="wrap">
+        <h2 data-i18n="case.dash.doneTitle">Что сделано</h2>
+        <p data-i18n="case.dash.doneP1">Экран собран из повторяемых блоков: sidebar, карточка баланса, четыре KPI-карточки, кольцевые диаграммы, карта Visa, блок акций и список транзакций.</p>
+        <div class="gallery">
+          <figure class="gallery__item">
+            <img src="../assets/img/dashboard/dashboard-overview.png" alt="Обзорный экран финансового дашборда: sidebar, баланс и KPI" loading="lazy">
+            <figcaption class="small" data-i18n="case.dash.shot1Cap">Общий вид: sidebar слева, баланс и KPI сверху, графики и операции ниже.</figcaption>
+          </figure>
+          <figure class="gallery__item">
+            <img src="../assets/img/dashboard/dashboard-cards.png" alt="Карточки баланса, четырёх KPI и карта Visa" loading="lazy">
+            <figcaption class="small" data-i18n="case.dash.shot2Cap">Карточки: баланс, четыре KPI и карта Visa в единой сетке.</figcaption>
+          </figure>
+          <figure class="gallery__item">
+            <img src="../assets/img/dashboard/dashboard-charts.png" alt="Кольцевые диаграммы расходов и блок акций" loading="lazy">
+            <figcaption class="small" data-i18n="case.dash.shot3Cap">Диаграммы: кольцевые графики расходов и блок акций.</figcaption>
+          </figure>
+          <figure class="gallery__item">
+            <img src="../assets/img/dashboard/dashboard-full-2x.png" alt="Полный экран финансового дашборда в двойном масштабе" loading="lazy">
+            <figcaption class="small" data-i18n="case.dash.shot4Cap">Полный экран в двойном масштабе — проверка плотности и отступов.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-block">
+      <div class="wrap">
+        <h2 data-i18n="case.dash.stepsTitle">Процесс</h2>
+        <ol class="steps">
+          <li class="step">
+            <h3 data-i18n="case.dash.step1Title">Структура</h3>
+            <p class="muted" data-i18n="case.dash.step1Text">Разложил данные по приоритету: баланс и KPI сверху, детали ниже, транзакции в конце экрана.</p>
+          </li>
+          <li class="step">
+            <h3 data-i18n="case.dash.step2Title">Визуальный язык</h3>
+            <p class="muted" data-i18n="case.dash.step2Text">Задал сетку, типографику и состояния карточек; диаграммы и карта получили единый стиль.</p>
+          </li>
+          <li class="step">
+            <h3 data-i18n="case.dash.step3Title">Прототип</h3>
+            <p class="muted" data-i18n="case.dash.step3Text">Собрал HTML-прототип из тех же блоков и проверил плотность, скролл и адаптив.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="case-block">
+      <div class="wrap">
+        <h2 data-i18n="case.dash.resultTitle">Результат</h2>
+        <ul>
+          <li data-i18n="case.dash.res1">Готовый макет на 237 узлов и рабочий HTML-прототип, который открывается без сборки.</li>
+          <li data-i18n="case.dash.res2">Набор переиспользуемых карточек и графиков для следующих экранов кабинета.</li>
+          <li data-i18n="case.dash.res3">Проверенная иерархия: главное видно на первом экране, детали — по мере скролла.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="case-cta">
+      <div class="wrap">
+        <h2 data-i18n="case.dash.ctaTitle">Обсудить похожую задачу?</h2>
+        <p data-i18n="case.dash.ctaText">Расскажите о проекте — отвечу и предложу, с чего начать.</p>
+        <div class="hero__actions">
+          <!-- TODO: заменить USERNAME на реальный ник в Telegram -->
+          <a class="btn btn--primary" href="https://t.me/USERNAME" target="_blank" rel="noopener" data-i18n="case.dash.ctaTelegram">Написать в Telegram</a>
+          <!-- TODO: заменить EMAIL@EXAMPLE.COM на реальный адрес почты -->
+          <a class="btn btn--ghost" href="mailto:EMAIL@EXAMPLE.COM" data-i18n="case.dash.ctaEmail">Написать на email</a>
+        </div>
+        <p><a class="small" href="../index.html" data-i18n="case.dash.back">← Все кейсы</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="small" data-i18n="footer.note">© 2026 Boris Topalov</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

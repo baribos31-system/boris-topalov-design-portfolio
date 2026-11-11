@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru" data-lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="page.title">Boris Topalov — портфолио продуктового дизайнера</title>
+  <meta name="description" content="Портфолио продуктового дизайнера Бориса Топалова: агрегатор путешествий, финансовый дашборд, интерфейсы и дизайн-системы.">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+</head>
+<body data-page="index">
+
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="logo" href="index.html">Boris Topalov</a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="#cases" data-i18n="nav.cases">Кейсы</a>
+        <a href="#about" data-i18n="nav.about">Обо мне</a>
+        <a href="#contact" data-i18n="nav.contact">Контакты</a>
+      </nav>
+      <button class="lang-toggle" id="langToggle" type="button" lang="en" aria-label="Switch to English">EN</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow" data-i18n="hero.eyebrow">Product designer · интерфейсы и дизайн-системы</p>
+        <h1 data-i18n="hero.title">Проектирую интерфейсы, которые понятно работают</h1>
+        <p class="lead" data-i18n="hero.lead">Меня зовут Борис Топалов. Восемь лет проектирую цифровые продукты: клиентские кабинеты, воронки, дашборды и дизайн-системы.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#cases" data-i18n="hero.ctaCases">Смотреть кейсы</a>
+          <!-- TODO: заменить USERNAME на реальный ник в Telegram -->
+          <a class="btn btn--ghost" href="https://t.me/USERNAME" target="_blank" rel="noopener" data-i18n="hero.ctaTelegram">Написать в Telegram</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cases">
+      <div class="wrap">
+        <h2 data-i18n="cases.title">Кейсы</h2>
+        <p class="lead" data-i18n="cases.lead">Проекты, где я отвечал за продуктовый дизайн: агрегатор путешествий, финансовый дашборд и кейс, который сейчас готовится.</p>
+
+        <div class="grid case-grid">
+
+          <a class="case-card" href="cases/youtravel.html">
+            <img src="assets/img/youtravel/cover.svg" alt="Обложка кейса youtravel.me — агрегатор путешествий" loading="lazy">
+            <h3 data-i18n="cases.c1.title">youtravel.me — агрегатор путешествий</h3>
+            <p class="muted" data-i18n="cases.c1.desc">Клиентская и бизнес-сторона сервиса, личный кабинет, воронка и рекламные креативы.</p>
+            <p class="small" data-i18n="cases.c1.meta">2019—2026 · продуктовый дизайн</p>
+          </a>
+
+          <a class="case-card" href="cases/finance-dashboard.html">
+            <img src="assets/img/dashboard/dashboard-overview.png" alt="Обложка кейса «Финансовый дашборд» — обзорный экран личного кабинета" loading="lazy">
+            <h3 data-i18n="cases.c2.title">Финансовый дашборд</h3>
+            <p class="muted" data-i18n="cases.c2.desc">Макет на 237 узлов: баланс, KPI, кольцевые диаграммы, карта и транзакции.</p>
+            <p class="small" data-i18n="cases.c2.meta">2026 · UI-концепт</p>
+          </a>
+
+          <a class="case-card" href="cases/case-3.html">
+            <img src="assets/img/case-3/cover.svg" alt="Обложка третьего кейса — кейс в подготовке" loading="lazy">
+            <h3 data-i18n="cases.c3.title">Кейс в подготовке</h3>
+            <p class="muted" data-i18n="cases.c3.desc">Материалы собираются. Раздел обновится, когда кейс будет готов.</p>
+            <p class="small" data-i18n="cases.c3.meta">Скоро</p>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap">
+        <h2 data-i18n="about.title">Обо мне</h2>
+        <p data-i18n="about.p1">Восемь лет в продуктовом дизайне: агрегаторы, финтех, внутренние инструменты. Начинаю с задачи и данных, заканчиваю макетом, прототипом и передачей в разработку.</p>
+        <p data-i18n="about.p2">Люблю, когда интерфейс решает конкретную проблему: меньше шагов, понятные состояния, аккуратная типографика. Работаю в тесной связке с продуктом и разработкой.</p>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <h2 data-i18n="contact.title">Контакты</h2>
+        <p class="lead" data-i18n="contact.lead">Открыт к проектам и консультациям. Отвечаю в течение дня.</p>
+        <div class="hero__actions">
+          <!-- TODO: заменить USERNAME на реальный ник в Telegram -->
+          <a class="btn btn--primary" href="https://t.me/USERNAME" target="_blank" rel="noopener" data-i18n="contact.telegram">Написать в Telegram</a>
+          <!-- TODO: заменить EMAIL@EXAMPLE.COM на реальный адрес почты -->
+          <a class="btn btn--ghost" href="mailto:EMAIL@EXAMPLE.COM" data-i18n="contact.email">Написать на email</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="small" data-i18n="footer.note">© 2026 Boris Topalov</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

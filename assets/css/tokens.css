@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Design tokens — light minimalism, one green accent
+   Existing variable names are a contract: extend, never rename.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Neutrals ------------------------------------------------------------- */
+  --bg: #FFFFFF;
+  --surface: #F7F7F8;
+  --surface-2: #EFEFF2;
+  --text: #0E0E10;
+  --muted: #6B7280;
+  --line: #E6E7EB;
+  --line-strong: #D6D8DE;
+
+  /* Accent --------------------------------------------------------------- */
+  --accent: #16A34A;          /* graphics, markers, rules — non-text only */
+  --accent-strong: #0F7D3B;   /* interactive green fill, 5.2:1 with white */
+  --accent-hover: #0B5A2A;    /* pressed / hover green, 8.4:1 with white */
+  --accent-soft: #E8F5EC;     /* tinted backgrounds, selection */
+  --accent-ink: #0F6B33;      /* small green text — 6.6:1 on white */
+  --on-accent: #FFFFFF;
+
+  /* Typography -----------------------------------------------------------
+     Display: humanist old-style serif for headings (print/editorial voice).
+     Text/UI: neutral grotesque with good Windows and macOS coverage.
+     Deliberately not Inter/system-ui — see .design/design-notes.md. */
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --font-sans: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --fs-hero: clamp(40px, 7vw, 84px);
+  --fs-h2: clamp(28px, 3.4vw, 44px);
+  --fs-h3: 22px;
+  --fs-body: 17px;
+  --fs-small: 14px;
+
+  /* Spacing scale -------------------------------------------------------- */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --space-6: 96px;
+
+  /* Shape ---------------------------------------------------------------- */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+
+  /* Layout --------------------------------------------------------------- */
+  --max: 1120px;
+
+  /* Elevation ------------------------------------------------------------ */
+  --shadow: 0 1px 2px rgba(14, 14, 16, .04), 0 8px 24px rgba(14, 14, 16, .06);
+  --shadow-lift: 0 2px 4px rgba(14, 14, 16, .04), 0 18px 40px rgba(14, 14, 16, .08);
+  --focus-ring: 0 0 0 3px rgba(22, 163, 74, .28);
+}

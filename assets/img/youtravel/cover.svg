@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="Abstract route map illustration">
+  <defs>
+    <linearGradient id="ytBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F8F9FA"/>
+      <stop offset="1" stop-color="#EDEFF2"/>
+    </linearGradient>
+    <pattern id="ytGrid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="#DEE1E6" stroke-width="1"/>
+    </pattern>
+    <filter id="ytShadow" x="-25%" y="-25%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#0E0E10" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#ytBg)"/>
+  <rect width="1600" height="900" fill="url(#ytGrid)"/>
+
+  <circle cx="1180" cy="440" r="330" fill="none" stroke="#C9CDD4" stroke-width="2"/>
+  <circle cx="1180" cy="440" r="214" fill="none" stroke="#CDD1D8" stroke-width="2" stroke-dasharray="2 10"/>
+
+  <path d="M210 660C420 640 520 380 760 420S1060 540 1180 440" fill="none" stroke="#0E0E10" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1010 492C1080 512 1140 470 1180 440" fill="none" stroke="#16A34A" stroke-width="4" stroke-linecap="round"/>
+
+  <circle cx="210" cy="660" r="12" fill="#FFFFFF" stroke="#0E0E10" stroke-width="3"/>
+  <circle cx="210" cy="660" r="3.5" fill="#16A34A"/>
+
+  <circle cx="1180" cy="440" r="48" fill="none" stroke="#16A34A" stroke-width="4" opacity="0.18"/>
+  <circle cx="1180" cy="440" r="30" fill="none" stroke="#16A34A" stroke-width="4" opacity="0.35"/>
+  <circle cx="1180" cy="440" r="11" fill="#16A34A"/>
+  <circle cx="1180" cy="440" r="3" fill="#FFFFFF"/>
+
+  <g stroke="#C8CBD2" stroke-width="1.5" stroke-linecap="round">
+    <path d="M520 420v16M512 428h16"/>
+    <path d="M860 560v16M852 568h16"/>
+    <path d="M980 260v16M972 268h16"/>
+    <path d="M360 300v16M352 308h16"/>
+  </g>
+
+  <g transform="rotate(-7 1140 690)">
+    <rect x="1020" y="600" width="250" height="140" rx="18" fill="#FFFFFF" stroke="#C9CDD4" stroke-width="2" filter="url(#ytShadow)"/>
+    <circle cx="1056" cy="640" r="10" fill="#E8F5EC"/>
+    <circle cx="1056" cy="640" r="4" fill="#16A34A"/>
+    <rect x="1080" y="634" width="118" height="8" rx="4" fill="#E6E8EC"/>
+    <rect x="1080" y="650" width="70" height="6" rx="3" fill="#EEEFF2"/>
+    <rect x="1044" y="682" width="88" height="26" rx="13" fill="#E8F5EC"/>
+    <circle cx="1058" cy="695" r="4" fill="#16A34A"/>
+    <rect x="1070" y="691" width="44" height="7" rx="3.5" fill="#16A34A"/>
+    <rect x="1148" y="682" width="60" height="26" rx="13" fill="#F1F2F4" stroke="#D5D8DE"/>
+  </g>
+
+  <path d="M120 120h48M120 120v48" fill="none" stroke="#16A34A" stroke-width="4"/>
+</svg>

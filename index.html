@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="ru" data-lang="ru">
+<html lang="ru" data-lang="ru" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-i18n="page.title">Boris Topalov — портфолио продуктового дизайнера</title>
-  <meta name="description" content="Портфолио продуктового дизайнера Бориса Топалова: агрегатор путешествий, финансовый дашборд, интерфейсы и дизайн-системы.">
+  <meta name="description" content="Портфолио продуктового дизайнера Бориса Топалова: маркетплейс авторских туров, финансовый дашборд, интерфейсы и дизайн-системы.">
+  <!-- тема применяется до первой отрисовки, чтобы не было вспышки другой темы -->
+  <script>try{var t=localStorage.getItem('portfolio.theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){}</script>
+  <link rel="preload" href="assets/fonts/Manrope-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/components.css">
@@ -19,17 +22,27 @@
         <a href="#about" data-i18n="nav.about">Обо мне</a>
         <a href="#contact" data-i18n="nav.contact">Контакты</a>
       </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Включить светлую тему">
+        <svg data-theme-icon="sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+        <svg data-theme-icon="moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.4 14.2A8.6 8.6 0 0 1 9.8 3.6a8.6 8.6 0 1 0 10.6 10.6Z"/></svg>
+      </button>
       <button class="lang-toggle" id="langToggle" type="button" lang="en" aria-label="Switch to English">EN</button>
+      <!-- TODO: заменить USERNAME на реальный ник в Telegram -->
+      <a class="header-cta" href="https://t.me/USERNAME" target="_blank" rel="noopener" data-i18n="header.cta">Написать</a>
     </div>
   </header>
 
   <main>
 
-    <section class="hero">
+    <section class="hero hero--dark grain">
+      <div class="hero__glow" aria-hidden="true"></div>
       <div class="wrap">
-        <p class="eyebrow" data-i18n="hero.eyebrow">Product designer · интерфейсы и дизайн-системы</p>
-        <h1 data-i18n="hero.title">Проектирую интерфейсы, которые понятно работают</h1>
-        <p class="lead" data-i18n="hero.lead">Меня зовут Борис Топалов. Восемь лет проектирую цифровые продукты: клиентские кабинеты, воронки, дашборды и дизайн-системы.</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">Борис Топалов · портфолио</p>
+        <h1 class="hero__title" data-i18n="hero.title">ПРОЕКТИРУЮ ЛИЧНЫЕ КАБИНЕТЫ, ВОРОНКИ И ДАШБОРДЫ</h1>
+        <p class="hero__meta">
+          <span class="hero__meta-item" data-i18n="hero.meta.years">8 лет</span><span class="hero__meta-sep" aria-hidden="true">·</span><span class="hero__meta-item" data-i18n="hero.meta.role">Senior product designer</span><span class="hero__meta-sep" aria-hidden="true">·</span><span class="hero__meta-item" data-i18n="hero.meta.domains">маркетплейсы, финтех, креативы</span>
+        </p>
+        <p class="lead" data-i18n="hero.lead">Восемь лет проектирую цифровые продукты: маркетплейс авторских туров, финтех-дашборды и рекламные креативы — от исследования до запуска.</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#cases" data-i18n="hero.ctaCases">Смотреть кейсы</a>
           <!-- TODO: заменить USERNAME на реальный ник в Telegram -->
@@ -38,16 +51,16 @@
       </div>
     </section>
 
-    <section class="section" id="cases">
+    <section class="section section--light grain" id="cases">
       <div class="wrap">
         <h2 data-i18n="cases.title">Кейсы</h2>
-        <p class="lead" data-i18n="cases.lead">Проекты, где я отвечал за продуктовый дизайн: агрегатор путешествий, финансовый дашборд и кейс, который сейчас готовится.</p>
+        <p class="lead" data-i18n="cases.lead">Два проекта, где я отвечал за продуктовый дизайн: маркетплейс авторских туров и финансовый дашборд.</p>
 
         <div class="grid case-grid">
 
           <a class="case-card" href="cases/youtravel.html">
-            <img src="assets/img/youtravel/cover.svg" alt="Обложка кейса youtravel.me — агрегатор путешествий" loading="lazy">
-            <h3 data-i18n="cases.c1.title">youtravel.me — агрегатор путешествий</h3>
+            <img src="assets/img/youtravel/cover.svg" alt="Обложка кейса youtravel.me — маркетплейс авторских туров" loading="lazy">
+            <h3 data-i18n="cases.c1.title">youtravel.me — маркетплейс авторских туров</h3>
             <p class="muted" data-i18n="cases.c1.desc">Клиентская и бизнес-сторона сервиса, личный кабинет, воронка и рекламные креативы.</p>
             <p class="small" data-i18n="cases.c1.meta">2019—2026 · продуктовый дизайн</p>
           </a>
@@ -59,12 +72,13 @@
             <p class="small" data-i18n="cases.c2.meta">2026 · UI-концепт</p>
           </a>
 
-          <a class="case-card" href="cases/case-3.html">
-            <img src="assets/img/case-3/cover.svg" alt="Обложка третьего кейса — кейс в подготовке" loading="lazy">
-            <h3 data-i18n="cases.c3.title">Кейс в подготовке</h3>
-            <p class="muted" data-i18n="cases.c3.desc">Материалы собираются. Раздел обновится, когда кейс будет готов.</p>
-            <p class="small" data-i18n="cases.c3.meta">Скоро</p>
-          </a>
+          <aside class="request-card">
+            <p class="label" data-i18n="requestCard.label">NDA</p>
+            <h3 data-i18n="requestCard.title">Приватные кейсы под NDA</h3>
+            <p class="muted" data-i18n="requestCard.text">Покажу на созвоне или в переписке.</p>
+            <!-- TODO: заменить USERNAME на реальный ник в Telegram -->
+            <a class="btn btn--primary" href="https://t.me/USERNAME" target="_blank" rel="noopener" data-i18n="requestCard.cta">Написать в Telegram</a>
+          </aside>
 
         </div>
       </div>
@@ -73,14 +87,14 @@
     <section class="section" id="about">
       <div class="wrap">
         <h2 data-i18n="about.title">Обо мне</h2>
-        <p data-i18n="about.p1">Восемь лет в продуктовом дизайне: агрегаторы, финтех, внутренние инструменты. Начинаю с задачи и данных, заканчиваю макетом, прототипом и передачей в разработку.</p>
+        <p data-i18n="about.p1">Восемь лет в продуктовом дизайне: маркетплейсы, финтех, внутренние инструменты. Начинаю с задачи и данных, заканчиваю макетом, прототипом и передачей в разработку.</p>
         <p data-i18n="about.p2">Люблю, когда интерфейс решает конкретную проблему: меньше шагов, понятные состояния, аккуратная типографика. Работаю в тесной связке с продуктом и разработкой.</p>
       </div>
     </section>
 
-    <section class="section" id="contact">
+    <section class="cta-band" id="contact">
       <div class="wrap">
-        <h2 data-i18n="contact.title">Контакты</h2>
+        <h2 data-i18n="contact.title">Обсудим задачу?</h2>
         <p class="lead" data-i18n="contact.lead">Открыт к проектам и консультациям. Отвечаю в течение дня.</p>
         <div class="hero__actions">
           <!-- TODO: заменить USERNAME на реальный ник в Telegram -->

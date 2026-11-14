@@ -1,24 +1,160 @@
 /* ==========================================================================
-   Components — contract classes only, no inline styles
+   Components v2 — "Molten horizon"
+   Surface archetype: Decide / Learn (portfolio). One idea per section;
+   dark hero + dark CTA band carry the brand, light case blocks carry proof.
+   Depends on tokens.css. All legacy class names stay functional.
    ========================================================================== */
 
-/* Header ------------------------------------------------------------------ */
+/* ==========================================================================
+   0. Global surface + shared primitives
+   ========================================================================== */
+
+html {
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* Grain: one reusable texture layer. Pure CSS + inline SVG tile. --------- */
+
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background-image: var(--grain-url);
+  background-size: 180px 180px;
+  background-repeat: repeat;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+}
+
+/* Small caps label: the second voice of the system after the display face. */
+
+/* .label — chip (рамка приходит из base.css), .eyebrow — маркер с точкой. */
+
+.label {
+  justify-self: start;
+  align-self: start;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  border-color: var(--line-strong);
+}
+
+.label::before {
+  content: none;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.eyebrow::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px 1px var(--glow-soft);
+}
+
+.lead {
+  max-width: 58ch;
+  font-size: clamp(17px, 1.35vw, 20px);
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Utilities must survive component scopes: .case-block p and .case-card p
+   set a body colour with higher specificity, so restate .muted for them. */
+
+.muted,
+p.muted,
+.case-block p.muted,
+.case-card p.muted,
+.case-card .small.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   1. Header — dark glass, always visible CTA
+   ========================================================================== */
 
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 50;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
+  z-index: 80;
+  /* Near-opaque, both themes: the bar scrolls over the black hero, the warm
+     glow AND the #F9F9F9 case panels. With the old .62 glass the composition
+     over a light panel was rgb(101,100,100) and .nav a dropped to 2.45:1 —
+     now the bar stays dark (rgb(20,20,20)) and the nav holds 7.66:1. */
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border, var(--line));
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  transition: background-color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out);
+}
+
+/* Fallback for engines without backdrop-filter: solid enough to stay legible */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header {
+    background: var(--bg);
+  }
 }
 
 .site-header__inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  min-height: 72px;
-  padding-block: var(--space-1);
+  justify-content: flex-start;
+  gap: 10px var(--space-2);
+  min-height: var(--header-h);
+  padding-block: 10px;
+}
+
+/* Nav sits in the optical centre; the action cluster stays tightly grouped
+   on the right instead of being spread by space-between. */
+
+.site-header .nav {
+  margin-inline: auto;
 }
 
 .logo {
@@ -26,60 +162,70 @@
   align-items: center;
   gap: 10px;
   font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 800;
   line-height: 1;
-  letter-spacing: 0;
-  color: var(--text);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--header-ink-hover, var(--text));
   white-space: nowrap;
 }
 
 .logo::before {
   content: "";
   flex: none;
-  width: 9px;
-  height: 9px;
-  border-radius: 1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
   background: var(--accent);
-  transform: rotate(45deg);
-  transition: transform .25s ease;
+  box-shadow: 0 0 12px 0 var(--glow-hard);
+  transform: none;
+  transition: box-shadow var(--dur) var(--ease-out);
 }
 
 .logo:hover::before {
-  transform: rotate(135deg);
+  transform: none;
+  box-shadow: 0 0 18px 2px var(--glow-hard);
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: clamp(14px, 2.4vw, 28px);
+  gap: clamp(14px, 2.2vw, 30px);
+  min-width: 0;
 }
 
 .nav a {
   position: relative;
-  padding-block: 6px;
-  font-size: 15px;
-  color: var(--muted);
-  transition: color .18s ease;
+  padding-block: 8px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--header-ink, var(--muted));
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease-out);
 }
 
 .nav a::after {
   content: "";
   position: absolute;
   inset-inline: 0;
-  bottom: 0;
+  bottom: 2px;
   height: 1px;
-  background: currentColor;
-  opacity: .6;
+  background: var(--accent);
+  box-shadow: 0 0 8px 0 var(--glow-hard);
+  opacity: 1;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform .22s ease;
+  transition: transform var(--dur) var(--ease-out);
 }
 
 .nav a:hover,
 .nav a:focus-visible,
 .nav a[aria-current="page"] {
-  color: var(--text);
+  color: var(--header-ink-hover, var(--text));
 }
 
 .nav a:hover::after,
@@ -88,74 +234,153 @@
   transform: scaleX(1);
 }
 
+/* Control pills — theme, language, header CTA ---------------------------- */
+
+.theme-toggle,
 .lang-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  min-height: 44px;
-  padding: 8px 16px;
-  border: 1px solid var(--line);
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-pill);
-  background: var(--surface);
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 600;
+  background: transparent;
+  color: var(--header-ink, var(--muted));
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: .08em;
+  letter-spacing: .1em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: color .18s ease, border-color .18s ease, background-color .18s ease;
+  transition: color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
+              background-color var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out);
 }
 
+.theme-toggle {
+  padding: 0;
+  width: 40px;
+}
+
+.theme-toggle svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-toggle:hover,
 .lang-toggle:hover {
-  color: var(--text);
-  border-color: var(--line-strong);
-  background: var(--bg);
+  color: var(--header-ink-hover, var(--text));
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Two-icon convention: [data-theme-icon="sun"] shows in dark, "moon" in light.
+   A single icon (or none) keeps working — this only refines the swap. */
+
+.theme-toggle [data-theme-icon] {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-toggle [data-theme-icon="sun"],
+html:not([data-theme]) .theme-toggle [data-theme-icon="sun"],
+html[data-theme="light"] .theme-toggle [data-theme-icon="moon"] {
+  display: block;
 }
 
 .lang-toggle a {
-  padding: 5px 10px;
+  padding: 4px 6px;
   border-radius: var(--radius-pill);
-  color: var(--muted);
+  color: var(--header-ink, var(--muted));
+  font-size: inherit;
+  letter-spacing: inherit;
 }
 
 .lang-toggle a:hover {
-  color: var(--text);
+  color: var(--header-ink-hover, var(--text));
 }
 
 .lang-toggle a[aria-current="true"],
 .lang-toggle a[aria-current="page"],
 .lang-toggle .is-active {
-  background: var(--bg);
-  color: var(--text);
-  box-shadow: 0 1px 2px rgba(14, 14, 16, .08);
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: none;
 }
 
-/* Buttons ----------------------------------------------------------------- */
+.header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out);
+}
+
+.header-cta:hover {
+  background: var(--accent-hover);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.header-cta:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   2. Buttons
+   ========================================================================== */
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-1);
-  min-height: 44px;
-  padding: 11px 24px;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 26px;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
-  font: inherit;
-  font-size: 15px;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 800;
   line-height: 1;
-  letter-spacing: -.005em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color .18s ease, border-color .18s ease,
-              color .18s ease, box-shadow .18s ease, transform .18s ease;
+  transition: background-color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
+              color var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out);
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .btn:active {
@@ -165,16 +390,20 @@
 .btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+  border-radius: var(--radius-pill);
 }
 
 .btn--primary {
-  background: var(--accent-strong);
+  background-color: var(--accent);
+  background-image: linear-gradient(100deg, #E85002 0%, #F16001 100%);
   color: var(--on-accent);
+  box-shadow: 0 10px 30px -14px rgba(232, 80, 2, .65);
 }
 
 .btn--primary:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 6px 16px rgba(22, 163, 74, .22);
+  /* Molten sweep: stays bright enough to keep dark ink at 5.2:1+ */
+  background-image: linear-gradient(100deg, #F16001 0%, #E85002 45%, #D9C3AB 100%);
+  box-shadow: var(--shadow-glow);
 }
 
 .btn--ghost {
@@ -184,21 +413,331 @@
 }
 
 .btn--ghost:hover {
-  background: var(--surface);
-  border-color: var(--text);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--text);
 }
 
 .btn--ghost:focus-visible {
-  outline-color: var(--text);
+  outline-color: var(--accent);
 }
 
-/* Cards ------------------------------------------------------------------- */
+/* ==========================================================================
+   3. Hero — dark stage, hemisphere glow, huge tight caps
+   ========================================================================== */
+
+.hero,
+.hero--dark,
+.case-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  padding-block: clamp(52px, 7vw, 112px) clamp(112px, 13vw, 200px);
+  background-color: #000000;
+  background-image: var(--grad-4);
+  color: #FFFFFF;
+
+  /* Local token scope: dark, in both themes. Cards and text inside inherit. */
+  --text: #FFFFFF;
+  --muted: #A7A7A7;
+  --line: rgba(255, 255, 255, .12);
+  --line-strong: rgba(255, 255, 255, .26);
+  --surface: #0D0C0B;
+  --surface-2: #171513;
+  --accent-ink: #F16001;
+  --on-accent: #0A0A0A;
+}
+
+/* Hemisphere glow. Explicit element from markup, or generated fallback. */
+
+.hero__glow,
+.hero::before,
+.case-hero::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2%;
+  z-index: -1;
+  width: min(1340px, 150vw);
+  aspect-ratio: 2.4 / 1;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  /* Stops are tight on purpose: the core stays at the horizon, the haze is
+     already <10% by the time it reaches the CTA row, so #A7A7A7 lead text keeps
+     its contrast. Verified by pixel sampling, see design-notes-v2 §5. */
+  background:
+    /* hot core sitting on the horizon */
+    radial-gradient(20% 42% at 50% 100%,
+      rgba(255, 214, 176, .95) 0%,
+      rgba(241, 96, 1, .6) 40%,
+      rgba(241, 96, 1, 0) 78%),
+    /* wide body of the dome */
+    radial-gradient(62% 100% at 50% 100%,
+      rgba(241, 96, 1, .92) 0%,
+      rgba(241, 96, 1, .55) 18%,
+      rgba(193, 8, 1, .22) 36%,
+      rgba(193, 8, 1, 0) 56%);
+  filter: blur(26px) saturate(120%);
+  box-shadow: inset 0 2px 0 rgba(255, 214, 180, .45);
+  pointer-events: none;
+}
+
+/* A crisp rim light along the dome so it reads as a horizon, not a blob. */
+
+.hero:has(.hero__glow)::before,
+.case-hero:has(.hero__glow)::before {
+  display: none;
+}
+
+.hero__glow {
+  display: block;
+}
+
+/* Horizon line + grain over the whole stage */
+
+.hero::after,
+.hero--dark::after,
+.case-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--grain-url);
+  background-size: 180px 180px;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(28px, 4vw, 44px);
+}
+
+.hero__title,
+.hero h1,
+.case-hero h1 {
+  margin: 0;
+  max-width: 19ch;
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 800;
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  color: #FFFFFF;
+}
+
+/* h1 without the hero__title class (older markup) keeps a mid scale so a
+   long Russian headline never turns into a 6-line wall. */
+
+.hero h1:not(.hero__title),
+.hero--dark h1:not(.hero__title),
+.case-hero h1:not(.hero__title) {
+  font-size: clamp(34px, 5.4vw, 84px);
+  max-width: 17ch;
+}
+
+/* Optional accent word: <span class="accent"> / <em> inside the title */
+
+.hero__title .accent,
+.hero__title em,
+.hero h1 em,
+.case-hero h1 em {
+  font-style: normal;
+  background-image: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* If clipped text is unsupported the word must still be readable. */
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero__title .accent,
+  .hero__title em,
+  .hero h1 em,
+  .case-hero h1 em {
+    background-image: none;
+    color: var(--accent);
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+.hero .eyebrow,
+.hero--dark .eyebrow,
+.hero__meta {
+  color: #A7A7A7;
+}
+
+.hero .lead,
+.hero--dark .lead,
+.case-hero .lead {
+  max-width: 54ch;
+  margin-top: clamp(18px, 2.2vw, 26px);
+  color: #A7A7A7;
+}
+
+.hero .eyebrow,
+.hero--dark .eyebrow,
+.case-hero .eyebrow {
+  margin-bottom: clamp(18px, 2.4vw, 28px);
+}
+
+/* Trust row: "8 лет · senior product designer · …" */
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 0;
+  /* base.css caps every <p> at 68ch; at 12px caps that is ~524px, so the row
+     wrapped on the desktop even with 1130px available and a separator was
+     left dangling at the end of the first line. Let the row use its line. */
+  max-width: none;
+  margin: clamp(26px, 3.4vw, 40px) 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #A7A7A7;
+}
+
+.hero__meta > * {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+/* Legacy markup (bare spans): the dot is drawn on the following item. */
+.hero__meta > * + *::before {
+  content: "·";
+  margin-inline: 12px;
+  color: #E85002;
+}
+
+/* Markup v2: separators are real <span class="hero__meta-sep" aria-hidden>
+   nodes, so CSS can drop them at narrow widths. When they exist, the legacy
+   pseudo dot must be switched off — otherwise every separator renders "· ·". */
+.hero__meta:has(.hero__meta-sep) {
+  gap: 6px 12px;
+}
+
+.hero__meta:has(.hero__meta-sep) > * + *::before {
+  content: none;
+}
+
+.hero__meta-sep {
+  flex: none;
+  justify-content: center;
+  min-width: .5em;
+  color: var(--accent-ink, #E85002);
+  font-weight: 700;
+  /* inherit the row's line box, so the dot sits on the same baseline as the
+     caps instead of floating 3–4px lower in its own 1-line box */
+  line-height: inherit;
+  user-select: none;
+}
+
+/* ==========================================================================
+   4. Sections — dark canvas, light case panels
+   ========================================================================== */
+
+.section {
+  position: relative;
+  padding-block: clamp(56px, 8vw, 112px);
+}
+
+.section + .section {
+  padding-block-start: clamp(32px, 5vw, 64px);
+}
+
+.section .grid,
+.section .case-grid {
+  margin-top: clamp(32px, 4vw, 56px);
+}
+
+/* Light panel inside the dark site: warm off-white, dark type. */
+
+.section--light,
+.case-block {
+  position: relative;
+  background: var(--l-bg);
+  color: var(--l-text);
+  isolation: isolate;
+
+  --bg: #F9F9F9;
+  --surface: #FFFFFF;
+  --surface-2: #F1EFEC;
+  --text: #0A0A0A;
+  --muted: #646464;
+  --line: #E6E2DC;
+  --line-strong: #CFC9C1;
+  --accent-ink: #C10801;
+  --on-accent: #0A0A0A;
+  --shadow: 0 1px 2px rgba(20, 14, 9, .05), 0 10px 30px rgba(20, 14, 9, .07);
+  --shadow-lift: 0 2px 6px rgba(20, 14, 9, .06), 0 22px 48px rgba(20, 14, 9, .12);
+}
+
+.section--light {
+  padding-block: clamp(56px, 8vw, 112px);
+  border-radius: var(--radius);
+}
+
+.section--light.grain::after {
+  opacity: var(--grain-opacity-light);
+  mix-blend-mode: multiply;
+}
+
+.section h2,
+.section--light h2 {
+  max-width: 18ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: .98;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.section .lead {
+  margin-top: var(--space-2);
+}
+
+/* ==========================================================================
+   5. Case cards — light cards, orange hover signal
+   ========================================================================== */
+
+/* Generic card — neutral panel, inherits the current surface scope */
 
 .card {
-  padding: var(--space-3);
-  background: var(--bg);
+  padding: clamp(20px, 2.4vw, 28px);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
+  color: var(--text);
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: 1.16fr 1fr;
+  gap: clamp(16px, 2vw, 24px);
+}
+
+.case-grid > :nth-child(3):not(.request-card) {
+  grid-column: 1 / -1;
+}
+
+.case-grid > .request-card {
+  grid-column: 1 / -1;
 }
 
 .case-card {
@@ -207,127 +746,205 @@
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  background: var(--bg);
+  padding: 10px;
+  background: #FFFFFF;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  color: inherit;
+  color: var(--l-text);
   text-decoration: none;
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  box-shadow: 0 1px 2px rgba(20, 14, 9, .04);
+  transition: transform var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out);
 }
 
 .case-card:hover,
 .case-card:focus-visible {
-  transform: translateY(-2px);
-  border-color: var(--line-strong);
-  box-shadow: var(--shadow-lift);
+  transform: translateY(-4px);
+  border-color: rgba(232, 80, 2, .55);
+  box-shadow:
+    0 0 0 1px rgba(232, 80, 2, .28),
+    0 26px 50px -26px rgba(232, 80, 2, .55),
+    0 2px 6px rgba(20, 14, 9, .06);
 }
 
 .case-card:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
 .case-card img {
+  display: block;
   width: 100%;
+  flex: 0 0 auto;
   aspect-ratio: 16 / 9;
   height: auto;
   object-fit: cover;
-  border-radius: 0;
-  background: var(--surface);
+  border-radius: calc(var(--radius) - 10px);
+  background: var(--l-elev-2);
+}
+
+/* The pair in the first row sits in unequal tracks (1.16fr / 1fr). A
+   width-derived ratio therefore gave the two media wells different heights
+   (322px vs 276px at 1440px) and pushed the titles 46px apart. A fixed
+   height — width-independent — puts both titles on one line again.
+   16:10 crop, top-anchored: the dashboard cover is a portrait export, so the
+   overview bar + KPI row is the part worth showing. */
+.case-grid > .case-card:nth-child(-n + 2) img {
+  height: clamp(196px, 20vw, 292px);
+  aspect-ratio: auto;
+  object-position: 50% 0;
+}
+
+.case-grid > :nth-child(3):not(.request-card) img {
+  aspect-ratio: 21 / 9;
+  max-height: 420px;
 }
 
 .case-card h2,
 .case-card h3 {
-  padding: var(--space-3) var(--space-3) 0;
-  font-size: var(--fs-h3);
+  padding: clamp(16px, 2vw, 22px) clamp(12px, 1.6vw, 16px) 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(19px, 1.6vw, 23px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  color: #0A0A0A;
+  text-wrap: balance;
 }
 
 .case-card p,
 .case-card .small {
-  padding: var(--space-1) var(--space-3) 0;
+  padding: 8px clamp(12px, 1.6vw, 16px) 0;
   margin: 0;
+  color: #4A4A4A;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .case-card .small {
-  color: var(--muted);
+  margin-top: auto;
+  padding-bottom: clamp(12px, 1.6vw, 16px);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #646464;
 }
 
 .case-card > p:last-child,
 .case-card > h2:last-child,
 .case-card > h3:last-child {
-  padding-bottom: var(--space-3);
+  padding-bottom: clamp(12px, 1.6vw, 16px);
 }
 
-.case-card p + p {
-  margin-top: 0;
-}
+/* ==========================================================================
+   6. Request card — dark glass "private cases under NDA"
+   ========================================================================== */
 
-/* Hero (home) ------------------------------------------------------------- */
-
-.hero {
+.request-card {
   position: relative;
-  isolation: isolate;
-  padding-block: clamp(64px, 10vw, 120px) var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+  overflow: hidden;
+  padding: clamp(24px, 3.6vw, 44px);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 140% at 88% -10%, rgba(232, 80, 2, .28) 0%, rgba(232, 80, 2, 0) 58%),
+    linear-gradient(155deg, rgba(23, 21, 19, .92) 0%, rgba(0, 0, 0, .94) 100%);
+  color: #FFFFFF;
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
+  box-shadow: 0 30px 70px -40px rgba(0, 0, 0, .85);
 }
 
-.hero::before {
+.request-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
   pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgba(14, 14, 16, .045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(14, 14, 16, .045) 1px, transparent 1px);
-  background-size: 88px 88px;
-  -webkit-mask-image: radial-gradient(120% 90% at 82% 0%, #000 0%, transparent 64%);
-  mask-image: radial-gradient(120% 90% at 82% 0%, #000 0%, transparent 64%);
-  opacity: .75;
+  background-image: var(--grain-url);
+  background-size: 180px 180px;
+  opacity: .22;
+  mix-blend-mode: overlay;
 }
 
-.hero .eyebrow {
-  margin-bottom: var(--space-2);
+.request-card > * {
+  position: relative;
+  z-index: 1;
 }
 
-.hero h1 {
-  max-width: 11.5em;
-  font-size: var(--fs-hero);
-  line-height: 1.05;
-  letter-spacing: -.02em;
+/* 11–12px caps on a chip that is itself orange-tinted: #F16001 composed to
+   4.26:1 against rgba(241,96,1,.08) over the card gradient. #FF8A3D holds
+   5.9:1 there (5.1:1 in the glow corner) with the same hue family. */
+.request-card .label,
+.request-card .eyebrow {
+  color: #FF8A3D;
 }
 
-.hero .lead {
-  max-width: 56ch;
-  margin-top: var(--space-3);
+.request-card .label {
+  border-color: rgba(241, 96, 1, .45);
+  background: rgba(241, 96, 1, .08);
 }
 
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-4);
+.request-card .eyebrow::before {
+  background: #F16001;
+  box-shadow: 0 0 10px 1px rgba(241, 96, 1, .55);
 }
 
-/* Case page --------------------------------------------------------------- */
+.request-card h2,
+.request-card h3 {
+  max-width: 22ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.6vw, 40px);
+  font-weight: 800;
+  line-height: .98;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.request-card p {
+  max-width: 52ch;
+  margin: 0;
+  color: #A7A7A7;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.request-card .small {
+  color: #A7A7A7;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.request-card .btn,
+.request-card .btn--ghost {
+  justify-self: start;
+  margin-top: var(--space-1);
+  border-color: rgba(255, 255, 255, .3);
+  color: #FFFFFF;
+}
+
+.request-card .btn--primary {
+  border-color: transparent;
+  color: var(--on-accent);
+}
+
+/* ==========================================================================
+   7. Case page — dark hero, light reading blocks
+   ========================================================================== */
 
 .case-hero {
-  padding-block: clamp(56px, 8vw, 104px) var(--space-5);
-}
-
-.case-hero .eyebrow {
-  margin-bottom: var(--space-2);
+  padding-block: clamp(60px, 8vw, 120px) clamp(64px, 8vw, 112px);
 }
 
 .case-hero h1 {
-  max-width: 13em;
-  font-size: var(--fs-hero);
-  line-height: 1.05;
-  letter-spacing: -.02em;
-}
-
-.case-hero .lead {
-  max-width: 760px;
-  margin-top: var(--space-3);
+  max-width: 16ch;
 }
 
 .case-meta {
@@ -335,64 +952,108 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 6px 0;
-  margin-top: var(--space-3);
+  margin-top: clamp(24px, 3vw, 36px);
+  font-family: var(--font-sans);
   font-size: var(--fs-small);
-  color: var(--muted);
+  color: #A7A7A7;
 }
 
 .case-meta > * {
   display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
+  flex-direction: column;
+  gap: 4px;
   margin: 0;
 }
 
+.case-meta > * + * {
+  padding-left: 20px;
+  margin-left: 20px;
+  border-left: 1px solid rgba(255, 255, 255, .14);
+}
+
 .case-meta > * + *::before {
-  content: "·";
-  margin-inline: var(--space-1);
-  color: var(--muted);
-  opacity: .55;
+  content: none;
 }
 
-.case-meta strong,
-.case-meta b {
-  color: var(--text);
-  font-weight: 500;
-}
-
-.case-meta dt {
-  color: var(--text);
-  font-weight: 500;
+.case-meta dt,
+.case-meta .small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #8A8A8A;
 }
 
 .case-meta dd {
   margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.case-meta strong,
+.case-meta b {
+  color: #FFFFFF;
+  font-weight: 700;
 }
 
 .case-block {
-  padding-block: var(--space-5);
+  padding-block: clamp(40px, 6vw, 88px);
 }
 
 .case-block + .case-block {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--l-line);
 }
 
 .case-block h2 {
-  max-width: 24ch;
-  margin-bottom: var(--space-3);
+  max-width: 22ch;
+  margin: 0 0 clamp(18px, 2.4vw, 28px);
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.8vw, 40px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  color: #0A0A0A;
 }
 
-.case-block > p {
-  max-width: 68ch;
+.case-block h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -.015em;
+  color: #0A0A0A;
 }
 
-/* Gallery ----------------------------------------------------------------- */
+.case-block > p,
+.case-block p,
+.case-block li {
+  max-width: 66ch;
+  color: #333333;
+}
+
+.case-block a:not(.btn) {
+  color: #0A0A0A;
+  text-decoration-color: rgba(232, 80, 2, .5);
+}
+
+.case-block a:not(.btn):hover {
+  color: var(--accent-ink);
+  text-decoration-color: currentColor;
+}
+
+.case-block :where(ul, ol) :where(strong, b) {
+  color: #0A0A0A;
+}
+
+/* ==========================================================================
+   8. Gallery
+   ========================================================================== */
 
 .gallery {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
-  margin-block: var(--space-4) 0;
+  gap: clamp(16px, 2vw, 24px);
+  margin-block: clamp(24px, 3vw, 40px) 0;
   padding: 0;
   list-style: none;
 }
@@ -400,7 +1061,7 @@
 .gallery__item {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 10px;
   margin: 0;
   min-width: 0;
 }
@@ -411,47 +1072,51 @@
 
 .gallery img {
   width: 100%;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
+  border: 1px solid var(--l-line);
+  border-radius: calc(var(--radius) - 4px);
+  background: #FFFFFF;
+  box-shadow: 0 18px 40px -30px rgba(20, 14, 9, .5);
 }
 
 .gallery figcaption {
-  font-size: var(--fs-small);
+  font-size: 13px;
   line-height: 1.5;
-  color: var(--muted);
+  color: #646464;
 }
 
-/* Steps ------------------------------------------------------------------- */
+/* ==========================================================================
+   9. Steps — numbered, orange ticks, hairline rhythm
+   ========================================================================== */
 
 .steps {
   counter-reset: step;
-  margin-block: var(--space-4);
+  margin-block: clamp(24px, 3vw, 40px);
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--l-line);
 }
 
 .step {
   counter-increment: step;
   display: grid;
-  grid-template-columns: 2.75rem minmax(0, 1fr);
+  grid-template-columns: 3.25rem minmax(0, 1fr);
   gap: var(--space-2);
   margin: 0;
-  padding-block: var(--space-3);
-  border-bottom: 1px solid var(--line);
+  padding-block: clamp(18px, 2.2vw, 26px);
+  border-bottom: 1px solid var(--l-line);
 }
 
 .step::before {
   content: counter(step, decimal-leading-zero);
   grid-column: 1;
   grid-row: 1;
-  padding-top: 5px;
-  font-size: var(--fs-small);
-  font-weight: 600;
+  padding-top: 3px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
   letter-spacing: .08em;
-  color: var(--accent-ink);
+  color: #C10801;
 }
 
 .step > * {
@@ -459,61 +1124,134 @@
 }
 
 .step h3 {
-  margin-bottom: var(--space-1);
+  margin: 0 0 6px;
   font-size: var(--fs-h3);
+  text-transform: none;
 }
 
 .step p {
   margin: 0;
   max-width: 62ch;
-  color: var(--muted);
+  color: #4A4A4A;
 }
 
-/* Tags -------------------------------------------------------------------- */
+/* ==========================================================================
+   10. Tags — orange pills
+   ========================================================================== */
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1);
+  gap: 8px;
   margin-block: var(--space-3);
   padding: 0;
   list-style: none;
 }
 
-.tag {
+.tag,
+.case-block .tag,
+.tags .tag {
   display: inline-flex;
   align-items: center;
   margin: 0;
-  padding: 5px 12px;
-  border: 1px solid var(--line);
+  padding: 7px 14px;
+  border: 1px solid rgba(232, 80, 2, .32);
   border-radius: var(--radius-pill);
-  background: var(--surface);
-  font-size: 13px;
-  line-height: 1.4;
-  letter-spacing: .01em;
-  color: var(--muted);
+  background: rgba(232, 80, 2, .08);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
   white-space: nowrap;
 }
 
-/* Case CTA ---------------------------------------------------------------- */
+/* ==========================================================================
+   11. CTA band — dark closing stage with glow
+   ========================================================================== */
 
+.cta-band,
 .case-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   margin: 0;
-  padding-block: var(--space-6);
-  background: var(--surface);
-  border-top: 1px solid var(--line);
+  padding-block: clamp(64px, 9vw, 128px);
+  background-color: #000000;
+  background-image: var(--grad-4);
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  color: #FFFFFF;
+
+  --text: #FFFFFF;
+  --muted: #A7A7A7;
+  --line: rgba(255, 255, 255, .12);
+  --line-strong: rgba(255, 255, 255, .3);
+  --accent-ink: #F16001;
 }
 
+.cta-band::before,
+.case-cta::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -42%;
+  z-index: 0;
+  width: min(1100px, 130vw);
+  aspect-ratio: 2.4 / 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(58% 100% at 50% 50%,
+      rgba(241, 96, 1, .8) 0%,
+      rgba(193, 8, 1, .45) 44%,
+      rgba(193, 8, 1, 0) 72%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.cta-band::after,
+.case-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: var(--grain-url);
+  background-size: 180px 180px;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+}
+
+.cta-band > .wrap,
+.case-cta > .wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-band h2,
 .case-cta h2 {
-  max-width: 24ch;
+  max-width: 16ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: .96;
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  color: #FFFFFF;
 }
 
+.cta-band p,
 .case-cta p {
-  max-width: 60ch;
+  max-width: 56ch;
+  margin-top: var(--space-2);
+  color: #A7A7A7;
 }
 
 .case-cta .hero__actions {
-  margin-top: var(--space-3);
+  margin-top: clamp(24px, 3vw, 36px);
 }
 
 .case-cta .hero__actions + p {
@@ -521,25 +1259,32 @@
 }
 
 .case-cta a:not(.btn) {
-  color: var(--text);
+  color: #FFFFFF;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: .18em;
-  text-decoration-color: var(--line-strong);
+  text-decoration-color: rgba(255, 255, 255, .3);
 }
 
 .case-cta a:not(.btn):hover {
-  color: var(--accent-ink);
+  color: #F16001;
   text-decoration-color: currentColor;
 }
 
-/* Footer ------------------------------------------------------------------ */
+/* ==========================================================================
+   12. Footer
+   ========================================================================== */
 
 .site-footer {
-  padding-block: var(--space-4);
-  border-top: 1px solid var(--line);
-  color: var(--muted);
+  padding-block: clamp(28px, 3.4vw, 44px);
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  color: #A7A7A7;
   font-size: var(--fs-small);
+
+  --text: #FFFFFF;
+  --muted: #A7A7A7;
+  --line: rgba(255, 255, 255, .12);
 }
 
 .site-footer .wrap {
@@ -552,82 +1297,202 @@
 
 .site-footer p {
   margin: 0;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #A7A7A7;
 }
 
 .site-footer a {
-  color: var(--text);
+  color: #FFFFFF;
 }
 
-/* Responsive -------------------------------------------------------------- */
+.site-footer a:hover {
+  color: #F16001;
+}
 
-@media (max-width: 640px) {
+/* ==========================================================================
+   13. Responsive — mobile-first safety, no horizontal scroll from 360px
+   ========================================================================== */
+
+@media (max-width: 960px) {
+  .case-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Equal tracks here, so the ratio gives both wells the same height again. */
+  .case-grid > .case-card:nth-child(-n + 2) img {
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  .case-card h2,
+  .case-card h3 {
+    font-size: 18px;
+  }
+
+  .case-card p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 860px) {
+  /* Header wraps to two rows here: logo + controls, then the nav.
+     Keep the token truthful so [id] scroll-margin and min-height agree. */
+  :root {
+    --header-h: 104px;
+  }
+
   .site-header__inner {
-    flex-wrap: wrap;
-    gap: 0 var(--space-2);
-    padding-block: 6px;
-    min-height: 0;
+    justify-content: flex-start;
+    gap: 8px;
   }
 
   .logo {
-    order: 1;
-  }
-
-  .lang-toggle {
-    order: 2;
-    margin-left: auto;
-  }
-
-  .nav {
-    order: 3;
+    margin-right: auto;
   }
 
   .site-header .nav {
+    margin-inline: 0;
+  }
+
+  .site-header .nav {
+    order: 4;
     width: 100%;
     gap: var(--space-3);
-    padding-block: 8px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-block: 4px 2px;
+  }
+
+  .site-header .nav::-webkit-scrollbar {
+    display: none;
   }
 
   .site-header .nav a {
-    padding-block: 4px;
-    font-size: 14px;
+    font-size: 11px;
+    padding-block: 6px;
   }
 
-  .hero {
-    padding-block: var(--space-5) var(--space-4);
+  .case-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stacked cards: no alignment to defend, so a plain 16:9 banner reads better
+     than a fixed-height strip. */
+  .case-grid > .case-card:nth-child(-n + 2) img {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-position: 50% 0;
+  }
+
+  .case-grid > :nth-child(3):not(.request-card) img {
+    aspect-ratio: 16 / 9;
+    max-height: none;
+  }
+
+  .case-meta > * + * {
+    padding-left: 14px;
+    margin-left: 14px;
+  }
+}
+
+/* Trust row on phones: a separator that lands at a line start ("· маркетплейсы")
+   is worse than no separator at all, and CSS cannot detect line starts without
+   JS. Below 720px the dots are dropped and the gap carries the rhythm —
+   the row still fits on one line down to ~700px, so the dots never dangle. */
+@media (max-width: 720px) {
+  .hero__meta {
+    gap: 6px 16px;
+  }
+
+  .hero__meta-sep,
+  .hero__meta > * + *::before {
+    display: none;
+    content: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero,
+  .hero--dark,
+  .case-hero {
+    padding-block: clamp(44px, 12vw, 72px) clamp(64px, 18vw, 104px);
+  }
+
+  .hero__glow,
+  .hero::before,
+  .case-hero::before {
+    width: 190vw;
+    bottom: -10%;
+    filter: blur(20px) saturate(115%);
   }
 
   .hero__actions {
-    gap: var(--space-2);
+    gap: 10px;
   }
 
-  .case-hero {
-    padding-block: var(--space-5) var(--space-4);
+  .btn {
+    min-height: 46px;
+    padding: 0 20px;
+    font-size: 11px;
   }
 
-  .case-meta {
-    row-gap: 4px;
-  }
-
-  .case-block {
-    padding-block: var(--space-4);
+  .section,
+  .section--light {
+    padding-block: clamp(40px, 10vw, 64px);
   }
 
   .gallery {
     grid-template-columns: minmax(0, 1fr);
-    margin-top: var(--space-3);
   }
 
   .step {
-    grid-template-columns: 2rem minmax(0, 1fr);
+    grid-template-columns: 2.25rem minmax(0, 1fr);
     gap: var(--space-1) var(--space-2);
   }
 
-  .case-cta {
-    padding-block: var(--space-5);
+  .case-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .case-meta > * + * {
+    padding-left: 0;
+    margin-left: 0;
+    border-left: 0;
+  }
+
+  .case-block h2 {
+    max-width: none;
   }
 }
 
 @media (max-width: 420px) {
+  .logo {
+    font-size: 12px;
+    letter-spacing: .08em;
+  }
+
+  .theme-toggle {
+    width: 38px;
+    min-width: 38px;
+    min-height: 38px;
+  }
+
+  .lang-toggle {
+    min-height: 38px;
+    padding: 0 10px;
+  }
+
+  .header-cta {
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: 10px;
+    letter-spacing: .08em;
+  }
+
   .hero__actions {
     flex-direction: column;
     align-items: stretch;
@@ -636,7 +1501,17 @@
   .hero__actions .btn {
     width: 100%;
   }
+
+  .request-card .btn,
+  .request-card .btn--ghost {
+    justify-self: stretch;
+    width: 100%;
+  }
 }
+
+/* ==========================================================================
+   14. Motion preferences + print
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -647,13 +1522,38 @@
   .case-card,
   .nav a,
   .nav a::after,
-  .lang-toggle a,
-  .logo::before {
+  .lang-toggle,
+  .theme-toggle,
+  .header-cta,
+  .logo::before,
+  .site-header {
     transition: none;
   }
 
   .btn:hover,
-  .case-card:hover {
+  .case-card:hover,
+  .header-cta:hover {
     transform: none;
+  }
+}
+
+@media print {
+  .site-header,
+  .cta-band::before,
+  .case-cta::before,
+  .hero::before,
+  .hero::after,
+  .case-hero::after,
+  .hero__glow {
+    display: none !important;
+  }
+
+  body,
+  .hero,
+  .case-hero,
+  .cta-band,
+  .case-cta {
+    background: #FFFFFF !important;
+    color: #000000 !important;
   }
 }

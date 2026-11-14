@@ -1,38 +1,66 @@
-/* Переключение языка без сборки и без fetch: словарь лежит в window.I18N (i18n.js).
-   Работает по file:// — только DOM API. */
+/* Язык и тема — без сборки и без fetch: словарь лежит в window.I18N (i18n.js).
+   Работает по file:// — только DOM API + localStorage в try/catch.
+   Тема и язык независимы: <html lang="ru" data-lang="ru" data-theme="dark">. */
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'portfolio.lang';
+  var LANG_KEY = 'portfolio.lang';
+  var THEME_KEY = 'portfolio.theme';
   var DEFAULT_LANG = 'ru';
+  var DEFAULT_THEME = 'dark';
   var LANGS = ['ru', 'en'];
+  var THEMES = ['dark', 'light'];
 
-  function readStoredLang() {
+  /* --- storage ---------------------------------------------------------- */
+
+  function readStored(key, allowed) {
     try {
-      var saved = window.localStorage.getItem(STORAGE_KEY);
-      return LANGS.indexOf(saved) !== -1 ? saved : null;
+      var saved = window.localStorage.getItem(key);
+      return allowed.indexOf(saved) !== -1 ? saved : null;
     } catch (e) {
       return null;
     }
   }
 
-  function storeLang(lang) {
+  function store(key, value) {
     try {
-      window.localStorage.setItem(STORAGE_KEY, lang);
+      window.localStorage.setItem(key, value);
     } catch (e) {
       /* приватный режим или file:// с запретом storage — просто игнорируем */
     }
   }
 
-  function getDictionary(page, lang) {
-    var i18n = window.I18N || {};
-    var pageDict = i18n[page] || {};
-    return pageDict[lang] || {};
+  /* --- dictionary ------------------------------------------------------- */
+
+  function pageId() {
+    return (document.body && document.body.getAttribute('data-page')) || '';
   }
 
+  function dictionary(lang) {
+    var i18n = window.I18N || {};
+    var page = i18n[pageId()] || {};
+    return page[lang] || {};
+  }
+
+  function t(lang, key, fallback) {
+    var dict = dictionary(lang);
+    return Object.prototype.hasOwnProperty.call(dict, key) ? dict[key] : fallback;
+  }
+
+  /* --- state ------------------------------------------------------------ */
+
+  function currentLang() {
+    return document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : DEFAULT_LANG;
+  }
+
+  function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : DEFAULT_THEME;
+  }
+
+  /* --- language --------------------------------------------------------- */
+
   function applyLang(lang) {
-    var page = document.body.getAttribute('data-page') || '';
-    var dict = getDictionary(page, lang);
+    var dict = dictionary(lang);
     var nodes = document.querySelectorAll('[data-i18n]');
     var i;
     var key;
@@ -56,26 +84,61 @@
       toggle.setAttribute('lang', lang === 'ru' ? 'en' : 'ru');
       toggle.setAttribute('aria-label', lang === 'ru' ? 'Switch to English' : 'Переключить на русский');
     }
+
+    /* подпись и aria-label переключателя темы тоже локализованы */
+    renderThemeToggle(currentTheme(), lang);
   }
 
-  function currentLang() {
-    return document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : DEFAULT_LANG;
-  }
+  /* --- theme ------------------------------------------------------------ */
 
-  function init() {
-    var lang = readStoredLang() || DEFAULT_LANG;
-    applyLang(lang);
-
-    var toggle = document.getElementById('langToggle');
-    if (!toggle) {
+  /* Кнопка темы — иконка (svg в разметке), поэтому текст не перезаписываем:
+     обновляем только локализованный aria-label. */
+  function renderThemeToggle(theme, lang) {
+    var btn = document.getElementById('themeToggle');
+    if (!btn) {
       return;
     }
 
-    toggle.addEventListener('click', function () {
-      var next = currentLang() === 'ru' ? 'en' : 'ru';
-      applyLang(next);
-      storeLang(next);
-    });
+    var toLight = theme !== 'light';
+
+    btn.setAttribute('lang', lang);
+    btn.setAttribute('aria-label', toLight
+      ? t(lang, 'theme.toLight', 'Switch to light theme')
+      : t(lang, 'theme.toDark', 'Switch to dark theme'));
+  }
+
+  function applyTheme(theme) {
+    var next = theme === 'light' ? 'light' : DEFAULT_THEME;
+    document.documentElement.setAttribute('data-theme', next);
+    renderThemeToggle(next, currentLang());
+  }
+
+  /* --- init ------------------------------------------------------------- */
+
+  function init() {
+    var lang = readStored(LANG_KEY, LANGS) || DEFAULT_LANG;
+
+    /* тема применяется до языка, чтобы aria-label сразу получил перевод */
+    applyTheme(readStored(THEME_KEY, THEMES) || DEFAULT_THEME);
+    applyLang(lang);
+
+    var langToggle = document.getElementById('langToggle');
+    if (langToggle) {
+      langToggle.addEventListener('click', function () {
+        var next = currentLang() === 'ru' ? 'en' : 'ru';
+        applyLang(next);
+        store(LANG_KEY, next);
+      });
+    }
+
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        var next = currentTheme() === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        store(THEME_KEY, next);
+      });
+    }
   }
 
   if (document.readyState === 'loading') {

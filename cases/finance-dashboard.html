@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru" data-lang="ru">
+<html lang="ru" data-lang="ru" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-i18n="page.title">Финансовый дашборд · Boris Topalov</title>
   <meta name="description" content="Кейс «Финансовый дашборд»: макет на 237 узлов в FigCraft, HTML-прототип, карточки баланса и KPI, диаграммы и транзакции.">
+  <script>try{var t=localStorage.getItem('portfolio.theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){}</script>
+  <link rel="preload" href="../assets/fonts/Manrope-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/components.css">
@@ -19,13 +21,20 @@
         <a href="../index.html#about" data-i18n="nav.about">Обо мне</a>
         <a href="../index.html#contact" data-i18n="nav.contact">Контакты</a>
       </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Включить светлую тему">
+        <svg data-theme-icon="sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+        <svg data-theme-icon="moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.4 14.2A8.6 8.6 0 0 1 9.8 3.6a8.6 8.6 0 1 0 10.6 10.6Z"/></svg>
+      </button>
       <button class="lang-toggle" id="langToggle" type="button" lang="en" aria-label="Switch to English">EN</button>
+      <!-- TODO: заменить USERNAME на реальный ник в Telegram -->
+      <a class="header-cta" href="https://t.me/USERNAME" target="_blank" rel="noopener" data-i18n="header.cta">Написать</a>
     </div>
   </header>
 
   <main>
 
     <section class="case-hero">
+      <div class="hero__glow" aria-hidden="true"></div>
       <div class="wrap">
         <p class="eyebrow" data-i18n="case.dash.eyebrow">UI-концепт · 2026</p>
         <h1 data-i18n="case.dash.title">Финансовый дашборд</h1>
@@ -124,7 +133,7 @@
       </div>
     </section>
 
-    <section class="case-cta">
+    <section class="cta-band">
       <div class="wrap">
         <h2 data-i18n="case.dash.ctaTitle">Обсудить похожую задачу?</h2>
         <p data-i18n="case.dash.ctaText">Расскажите о проекте — отвечу и предложу, с чего начать.</p>
